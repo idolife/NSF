@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSF.Framework", "NSF.Framework\NSF.Framework.csproj", "{77BBC9CB-749F-4819-96C3-259F3FFA30F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSF.Share", "NSF.Share\NSF.Share.csproj", "{6F771280-2A97-418A-97F8-D63CC0E27DC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSF.EchoServer", "NSF.GameServer\NSF.EchoServer.csproj", "{AE914BED-0796-43B0-BBC6-65F4B715F6AE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{77BBC9CB-749F-4819-96C3-259F3FFA30F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77BBC9CB-749F-4819-96C3-259F3FFA30F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77BBC9CB-749F-4819-96C3-259F3FFA30F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77BBC9CB-749F-4819-96C3-259F3FFA30F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F771280-2A97-418A-97F8-D63CC0E27DC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F771280-2A97-418A-97F8-D63CC0E27DC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F771280-2A97-418A-97F8-D63CC0E27DC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F771280-2A97-418A-97F8-D63CC0E27DC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE914BED-0796-43B0-BBC6-65F4B715F6AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE914BED-0796-43B0-BBC6-65F4B715F6AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE914BED-0796-43B0-BBC6-65F4B715F6AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE914BED-0796-43B0-BBC6-65F4B715F6AE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
