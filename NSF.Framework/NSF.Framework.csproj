@@ -51,6 +51,9 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\ByteBlock.cs" />
+    <Compile Include="Base\ConcurrentTaskAtor.cs" />
+    <Compile Include="Base\WaitableConcurrentQueue.cs" />
     <Compile Include="Net\HttpHandler.cs" />
     <Compile Include="Net\StreamAcceptor.cs" />
     <Compile Include="Net\StreamHandler.cs" />
@@ -62,9 +65,7 @@
       <Name>NSF.Share</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Base\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
