@@ -10,7 +10,7 @@ namespace NSF.Framework.Base
     /// <summary>
     /// 并发多任务执行器。
     /// </summary>
-    class ConcurrentTaskAtor
+    public class ConcurrentTaskAtor
     {
         /// <summary>
         /// 某项执行任务的包装。

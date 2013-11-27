@@ -14,7 +14,7 @@ namespace NSF.Framework.Base
         /// <summary>
         /// 获取当前读指针的偏移量。
         /// </summary>
-        public Int32 ReadPtr { get { return _RdPtr; } }
+        public Int32 ReadPosition { get { return _RdPtr; } }
         /// <summary>
         /// 移动当前读指针的位置。
         /// </summary>
@@ -33,7 +33,7 @@ namespace NSF.Framework.Base
         /// <summary>
         /// 获取当前写指针的偏移量。
         /// </summary>
-        public Int32 WritePtr { get { return _WrPtr; } }
+        public Int32 WritePosition { get { return _WrPtr; } }
         /// <summary>
         /// 移动当前写指针的位置。
         /// </summary>
@@ -87,7 +87,7 @@ namespace NSF.Framework.Base
         {
             get
             {
-                /// 需要通过Offset及Space属性来工作
+                /// 需要通过Offset及Length属性来工作
                 return (_Cache);
             }
         }
@@ -125,5 +125,12 @@ namespace NSF.Framework.Base
                 _WrPtr = length;
             }
         }
-    }
+
+        public void Reset()
+        {
+            _RdPtr = 0;
+            _WrPtr = 0;
+        }
+    }    
+
 }
