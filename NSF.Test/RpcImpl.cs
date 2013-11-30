@@ -23,11 +23,11 @@ namespace NSF.Test
     class RpcDemoImpl : RpcInterface
     {
         Dictionary<String, Func<String, Task<String>>> _Handlers = new Dictionary<String, Func<String, Task<String>>>();
-        public async Task<string> OnCall(string method, string args)
+        public Task<string> OnCall(string method, string args)
         {
             if (_Handlers.ContainsKey(method))
                 return
-                    await _Handlers[method](args);
+                    _Handlers[method](args);
             else
                 return null;            
         }

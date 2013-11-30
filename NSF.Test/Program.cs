@@ -38,11 +38,11 @@ namespace NSF.Test
                     Op = 10000,
                     Xx = "Hello RPC",
                 };
-                String result = rpc.CallAsync(req.GetType().ToString(), JsonConvert.SerializeObject(req)).Result;
-                if (result == null)
+                RpcIncrementAck ack = rpc.CallAsync<RpcIncrementAck>(req).Result;
+                if (ack == null)
                     Log.Debug("RPC = timeout.");
                 else
-                    Log.Debug("RPC = {0}.", result);
+                    Log.Debug("RPC = {0}.", ack);
                 Console.ReadKey();
             }
         }

@@ -58,7 +58,7 @@ namespace NSF.Framework.Base
         /// <summary>
         /// 任务容器。
         /// </summary>
-        ConcurrentBag<Actor> _Jobs;
+        WaitableConcurrentQueue<Actor> _Jobs;
         /// <summary>
         /// 任务取消对象。
         /// </summary>
@@ -68,7 +68,7 @@ namespace NSF.Framework.Base
         /// </summary>
         public ConcurrentTaskAtor()
         {
-            _Jobs = new ConcurrentBag<Actor>();
+            _Jobs = new WaitableConcurrentQueue<Actor>();
             _CancelTokenSource = new CancellationTokenSource();
             Task.Run(async () => await Proc(), _CancelTokenSource.Token);
         }
@@ -88,7 +88,7 @@ namespace NSF.Framework.Base
         public void Put(Task t, Object o, Func<Task, Object, Task> cb)
         {
             Actor act = new Actor(t, o, cb);
-            _Jobs.Add(act);
+            _Jobs.Enqueue(act);
         }
 
         /// <summary>
@@ -104,51 +104,41 @@ namespace NSF.Framework.Base
         /// <returns></returns>
         private async Task Proc()
         {
-            /// 每间隔刷新任务队列时常（毫秒）
-            Int32 TIMEOUT = 200;
             /// 循环逻辑异常的异常数据。
             Exception E = null;
             /// 当前的执行队列。
-            List<Actor> waitActs = new List<Actor>();
-            /// 我们总是希望该对象有东西可做
-            /// 所以这里就不适用信号机制来通知有新任务到达
+            List<Actor> jobWait = new List<Actor>();
+            /// 创建一个新任务通知
+            Task<Actor> jobNtf = _Jobs.Dequeue();
             try
             {
                 while (true)
                 {
-                    /// 创建一个超时任务用来实现等待超时
-                    /// （每隔定时切换一次排期从而使等待过程中产生的新任务加入）
-                    while (_Jobs.Count > 0)
-                    {
-                        Actor act;
-                        if (!_Jobs.TryTake(out act))
-                            break;
-                        waitActs.Add(act);
-                    }
-
-                    /// 空任务队列
-                    if (waitActs.Count == 0)
-                    {
-                        /// 超时设定作为休眠时间
-                        await Task.Delay(TIMEOUT);
-                        continue;
-                    }
-
                     /// 等待任意一个任务完成
-                    List<Task> waitTasks = waitActs.Select(x => x.Task).ToList();
-                    Task timeoutTask = Task.Delay(TIMEOUT);
-                    waitTasks.Add(timeoutTask);
-                    Task finishTask = await Task.WhenAny(waitTasks);
+                    List<Task> jobDisp = jobWait.Select(x => x.Task).ToList();
+                    jobDisp.Add(jobNtf);
+                    Task finishTask = await Task.WhenAny(jobDisp);
                     /// 有任务完成
-                    /// （非超时）
-                    if (finishTask != timeoutTask)
+                    if (finishTask != jobNtf)
                     {
-                        /// 回调完成处理
-                        Actor job = waitActs.Find(x => x.Task == finishTask);
-                        await job.Callback(finishTask, job.Object);
-
-                        /// 移除完成的任务
-                        waitActs.Remove(job);
+                        /// 关联完成的任务对象
+                        Actor job = jobWait.Find(x => x.Task == finishTask);
+                        /// 不是本地回调则创建分发任务完成实际回调
+                        if (job.Callback != null)
+                        {
+                            Put(job.Callback(finishTask, job.Object), null, null);
+                        }
+                        /// 移除正在回调的任务
+                        jobWait.Remove(job);
+                    }
+                    /// 有任务到达
+                    else
+                    {
+                        /// 添加新任务到等待队列
+                        Actor job = jobNtf.Result;
+                        jobWait.Add(job);
+                        /// 创建一个新任务通知
+                        jobNtf = _Jobs.Dequeue();
                     }
                 }
             }

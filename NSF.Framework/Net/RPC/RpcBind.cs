@@ -24,22 +24,41 @@ namespace NSF.Framework.Net.RPC
         public String Result;
     }
 
-    class RpcCallJob
+    class RpcCallStub
     {
-        TaskCompletionSource<String> _TCS = new TaskCompletionSource<String>();
-        public Task<String> State { get { return _TCS.Task; } }
+        public virtual Boolean IsCompleted { get { return false; } }
         public Int32 Id { get { return Info.Id; } }
         public RpcCallInfo Info { get; private set; }
-        public Boolean IsCompleted { get { return _TCS.Task.IsCompleted; } }
-
-        public RpcCallJob(RpcCallInfo info)
+        public virtual void Complete(String v) { }
+        public RpcCallStub(RpcCallInfo info)
         {
             Info = info;
         }
+    }
 
-        public void Complete(String v)
+    class RpcCallJob<T> : RpcCallStub where T : class
+    {
+        TaskCompletionSource<T> _TCS = new TaskCompletionSource<T>();
+        public Task<T> State { get { return _TCS.Task; } }
+        public override Boolean IsCompleted { get { return _TCS.Task.IsCompleted; } }
+
+        public RpcCallJob(RpcCallInfo info)
+            : base(info)
         {
-            Task.Run(() => _TCS.SetResult(v));
+        }
+
+        public override void Complete(String v)
+        {
+            /// 最终结果类型就是字符串或者表示超时
+            if (typeof(T) == typeof(String) || v == null)
+            {
+                Task.Run(() => _TCS.SetResult(v as T));
+                return;
+            }
+
+            /// 最终结果需要通过Json反序列化            
+            Object result = JsonConvert.DeserializeObject(v, typeof(T));
+            Task.Run(() => _TCS.SetResult(result as T));
         }
     }
 
@@ -81,16 +100,17 @@ namespace NSF.Framework.Net.RPC
             return job;
         }
 
-        public static RpcCallJob BuildRpcCallJob(String method, String param)
+        public static RpcCallJob<R> BuildRpcCallJob<R>(Object req)
+            where R : class
         {
             RpcCallInfo info = new RpcCallInfo
             {
                 Id = Interlocked.Increment(ref SEED),
-                Method = method,
-                Args = param,
+                Method = req.GetType().ToString(),
+                Args = JsonConvert.SerializeObject(req),
             };
 
-            RpcCallJob job = new RpcCallJob(info);
+            RpcCallJob<R> job = new RpcCallJob<R>(info);
             return job;
         }
 
@@ -109,19 +129,19 @@ namespace NSF.Framework.Net.RPC
             return buff;
         }
 
-        public static RpcCallInfo DecodeRpcCallInfo(ByteBlock buff)
+        public static RpcCallInfo DecodeRpcCallInfo(ByteBlock block)
         {
-            Byte[] cache = buff.Buffer;
-            Int32 offset = buff.ReadPosition;
-            Int32 total = buff.Length;
+            Byte[] cache = block.Buffer;
+            Int32 offset = block.ReadPosition;
+            Int32 total = block.Length;
 
             /// 不足一个包的长度
-            if (total < sizeof(byte)*2)
+            if (total < sizeof(byte) * 2)
                 return null;
 
             Int32 h = -1;
             Int32 t = -1;
-            for(Int32 i = 0; i < total; ++i)
+            for (Int32 i = 0; i < total; ++i)
             {
                 /// 检索包头标记
                 if (cache[offset + i] == RPC_H)
@@ -142,7 +162,7 @@ namespace NSF.Framework.Net.RPC
             Int32 length = t - h - 1;
             Byte[] reqBytes = new byte[length];
             Array.Copy(cache, offset + h + 1, reqBytes, 0, length);
-            buff.ReadOffset(length + 2);
+            block.ReadOffset(length + 2);
             String reqBase64 = Encoding.UTF8.GetString(reqBytes);
             String reqJson = Encoding.UTF8.GetString(Convert.FromBase64String(reqBase64));
             RpcCallInfo rpcCallInfo = JsonConvert.DeserializeObject<RpcCallInfo>(reqJson);
