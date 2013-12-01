@@ -37,6 +37,7 @@ namespace NSF.Framework.Net.RPC
             _Waiting.Add(job);
             Put(Task.Delay(1000), job, OnTimeout);
 
+            /// 外发远程调用请求
             if (_Peer != null && _Peer.Connected)
             {
                 ByteBlock push = new ByteBlock(1024);
@@ -54,18 +55,26 @@ namespace NSF.Framework.Net.RPC
             return job.State;
         }
 
-        //public void Call(String method, String param)
-        //{
-        //    /// 创建一个调用任务进入队列
-        //    RpcCallJob job = Util.BuildRpcCallJob(method, param);
-        //    _Pending.Enqueue(job);
+        public void Call(Object req)
+        {
+            /// 创建一个调用任务进入队列
+            RpcCallStub job = Util.BuildRpcCallStub(req);
 
-        //    /// 如果不在分发状态则发起一个
-        //    if (Interlocked.CompareExchange(ref _Dispatching, 1, 0) == 0)
-        //    {
-        //        Put(Task.Delay(0), null, OnPush);
-        //    }
-        //}
+            /// 外发远程调用请求
+            if (_Peer != null && _Peer.Connected)
+            {
+                ByteBlock push = new ByteBlock(1024);
+                /// 创建一个关联任务的发送任务
+                Util.EncodeRpcCallInfo(job.Info, push);
+                Task sendTask = _Peer.GetStream().WriteAsync(push.Buffer, push.ReadPosition, push.Length);
+                Put(sendTask, job, OnSend);
+                Log.Debug("RPC call#{0} job schedued.", job.Id);
+            }
+            else
+            {
+                Log.Debug("RPC call#{0} job not schedued because of not ready.", job.Id);
+            }
+        }
 
         protected Task OnTimeout(Task finishTask, Object act)
         {
@@ -79,38 +88,6 @@ namespace NSF.Framework.Net.RPC
             _Waiting.Remove(job);
             return Task.FromResult(0);
         }
-
-        //protected Task OnPush(Task finishTask, Object nil)
-        //{
-        //    /// 连接失效
-        //    if (_Peer == null || !_Peer.Connected)
-        //    {
-        //        Log.Debug("Try to push but rpc connection not ready.");
-
-        //        /// 清除外发状态
-        //        Interlocked.CompareExchange(ref _Dispatching, 0, 1);
-        //        return Task.FromResult(0);
-        //    }
-
-        //    ///  公平竞争模式
-        //    RpcCallStub job;
-        //    if (!_Pending.TryDequeue(out job))
-        //    {
-        //        Log.Debug("Try to push but no rpc call pending.");
-
-        //        /// 清除外发状态
-        //        Interlocked.CompareExchange(ref _Dispatching, 0, 1);
-        //        return Task.FromResult(0);
-        //    }
-
-        //    _Waiting.Add(job);
-        //    Util.EncodeRpcCallInfo(job.Info, _PushCache);
-        //    Task sendTask = _Peer.GetStream().WriteAsync(_PushCache.Buffer, _PushCache.ReadPosition, _PushCache.Length);
-        //    Put(sendTask, job, OnSend);
-        //    Log.Debug("RPC call#{0} job schedued.", job.Id);
-
-        //    return Task.FromResult(0);
-        //}
 
         protected Task OnSend(Task finishTask, Object with)
         {

@@ -114,6 +114,17 @@ namespace NSF.Framework.Net.RPC
             return job;
         }
 
+        public static RpcCallStub BuildRpcCallStub(object req)
+        {
+            RpcCallInfo info = new RpcCallInfo
+            {
+                Id = Interlocked.Increment(ref SEED),
+                Method = req.GetType().ToString(),
+                Args = JsonConvert.SerializeObject(req),
+            };
+            return new RpcCallStub(info);
+        }
+
         public static ByteBlock EncodeRpcCallInfo(RpcCallInfo info, ByteBlock buff)
         {
             String reqJson = JsonConvert.SerializeObject(info);
@@ -244,5 +255,6 @@ namespace NSF.Framework.Net.RPC
                 throw new InvalidDataException("RPC Stream Invalid(Decode)");
             return resp;
         }
+
     }
 }
