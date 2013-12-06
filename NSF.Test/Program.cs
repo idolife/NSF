@@ -17,6 +17,12 @@ namespace NSF.Test
     {
         static void Main(string[] args)
         {
+            /// Intialize JsonConvert
+            var ___1 = JsonConvert.SerializeObject(new RpcIncrementReq { Op = 100, Xx = "bb" });
+            var ___2 = JsonConvert.DeserializeObject<RpcIncrementReq>(___1);
+            var ___3 = JsonConvert.SerializeObject(new RpcIncrementAck { Po = 100, Xx = "bb" });
+            var ___4 = JsonConvert.DeserializeObject<RpcIncrementAck>(___3);
+
             if (args.Length >= 1)
             {
                 /// server

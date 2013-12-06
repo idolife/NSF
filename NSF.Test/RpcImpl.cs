@@ -22,29 +22,19 @@ namespace NSF.Test
 
     class RpcDemoImpl : RpcInterface
     {
-        Dictionary<String, Func<String, Task<String>>> _Handlers = new Dictionary<String, Func<String, Task<String>>>();
-        public Task<string> OnCall(string method, string args)
-        {
-            if (_Handlers.ContainsKey(method))
-                return
-                    _Handlers[method](args);
-            else
-                return null;            
-        }
-
         public RpcDemoImpl()
         {
-            _Handlers[typeof(RpcIncrementReq).ToString()] = OnRpcIncrementReq;
+            RegisterCall(typeof(RpcIncrementReq), OnRpcIncrementReq);
         }
 
-        protected Task<String> OnRpcIncrementReq(String args)
+        protected Task<Object> OnRpcIncrementReq(Object args)
         {
-            RpcIncrementReq req = JsonConvert.DeserializeObject<RpcIncrementReq>(args);
-            if (req == null)
+            if (args == null)
             {
-                Log.Debug("OnRpcIncrementReq, Deserialize request failed.");
-                return Task.FromResult((String)(null));
+                Log.Debug("OnRpcIncrementReq, Request parameter is null.");
+                return Task.FromResult((Object)null);
             }
+            RpcIncrementReq req = (RpcIncrementReq)args;
 
             RpcIncrementAck ack = new RpcIncrementAck
             {
@@ -52,7 +42,7 @@ namespace NSF.Test
                 Xx = req.Xx,
             };
 
-            return Task.FromResult(JsonConvert.SerializeObject(ack));
+            return Task.FromResult((Object)ack);
         }
     }
 }

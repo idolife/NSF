@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Threading;
+using Newtonsoft.Json;
 using NSF.Framework.Base;
 using NSF.Share;    
 
@@ -55,7 +56,7 @@ namespace NSF.Framework.Net.RPC
                 /// 创建一个调用任务
                 Log.Debug("RPC recv call = [{0}].", rpc.Id);
                 /// 创建逻辑调用任务
-                Task<String> callTask = _Impl.OnCall(rpc.Method, rpc.Args);
+                Task<Object> callTask = _Impl.OnCall(rpc.Method, rpc.Args);
                 Put(callTask, rpc, OnResp);
             }
 
@@ -71,8 +72,8 @@ namespace NSF.Framework.Net.RPC
         {
             /// 调用完成
             RpcCallInfo call = job as RpcCallInfo;
-            Task<String> callTask = finishTask as Task<String>;
-            String result = callTask.Result;
+            Task<Object> callTask = finishTask as Task<Object>;
+            Object result = callTask.Result;
             Log.Debug("RPC call#{0} resp = [{1}].", call.Id, result);
 
             /// 返回结果为“空”表示此调用无应答
@@ -82,7 +83,7 @@ namespace NSF.Framework.Net.RPC
                 RpcRespInfo resp = new RpcRespInfo
                 {
                     Id = call.Id,
-                    Result = result,
+                    Result = JsonConvert.SerializeObject(result),
                 };
 
                 ByteBlock push = new ByteBlock(1024);
