@@ -24,15 +24,33 @@ namespace NSF.Test
     {
         public RpcDemoImpl()
         {
-            RegisterCall(typeof(RpcIncrementReq), OnRpcIncrementReq);
+            RegisterCall<RpcIncrementReq, RpcIncrementAck>(OnRpcIncrementReq);
         }
 
         protected Task<Object> OnRpcIncrementReq(Object args)
         {
-            if (args == null)
+            RpcIncrementReq req = args as RpcIncrementReq;
+            if (req == null)
             {
                 Log.Debug("OnRpcIncrementReq, Request parameter is null.");
                 return Task.FromResult((Object)null);
+            }
+
+            RpcIncrementAck ack = new RpcIncrementAck
+            {
+                Po = req.Op + 1,
+                Xx = req.Xx,
+            };
+
+            return Task.FromResult((Object)ack);
+        }
+
+        protected Task<RpcIncrementAck> OnRpcIncrementReq(RpcIncrementReq args)
+        {
+            if (args == null)
+            {
+                Log.Debug("OnRpcIncrementReq, Request parameter is null.");
+                return Task.FromResult((RpcIncrementAck)null);
             }
             RpcIncrementReq req = (RpcIncrementReq)args;
 
@@ -42,7 +60,7 @@ namespace NSF.Test
                 Xx = req.Xx,
             };
 
-            return Task.FromResult((Object)ack);
+            return Task.FromResult((RpcIncrementAck)ack);
         }
     }
 }
