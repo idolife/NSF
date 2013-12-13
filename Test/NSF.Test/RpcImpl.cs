@@ -27,24 +27,6 @@ namespace NSF.Test
             RegisterCall<RpcIncrementReq, RpcIncrementAck>(OnRpcIncrementReq);
         }
 
-        protected Task<Object> OnRpcIncrementReq(Object args)
-        {
-            RpcIncrementReq req = args as RpcIncrementReq;
-            if (req == null)
-            {
-                Log.Debug("OnRpcIncrementReq, Request parameter is null.");
-                return Task.FromResult((Object)null);
-            }
-
-            RpcIncrementAck ack = new RpcIncrementAck
-            {
-                Po = req.Op + 1,
-                Xx = req.Xx,
-            };
-
-            return Task.FromResult((Object)ack);
-        }
-
         protected Task<RpcIncrementAck> OnRpcIncrementReq(RpcIncrementReq args)
         {
             if (args == null)

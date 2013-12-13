@@ -115,9 +115,13 @@ namespace NSF.Framework.Base
                 while (true)
                 {
                     /// 等待任意一个任务完成
-                    List<Task> jobDisp = jobWait.Select(x => x.Task).ToList();
-                    jobDisp.Add(jobNtf);
-                    Task finishTask = await Task.WhenAny(jobDisp);
+                    List<Task> jobTasks = (
+                        jobWait
+                        .Select(x => x.Task)
+                        .Where(x => x != null)).ToList();
+                    jobTasks.Add(jobNtf);
+                    Task finishTask = await Task.WhenAny(jobTasks);
+
                     /// 有任务完成
                     if (finishTask != jobNtf)
                     {
