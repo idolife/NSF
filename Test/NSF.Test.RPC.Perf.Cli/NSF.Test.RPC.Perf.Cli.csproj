@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4B82FBD9-7470-4611-B432-C7AFDA683DF5}</ProjectGuid>
+    <ProjectGuid>{DA24BB1C-A121-436C-83E9-B2C4F4CC8309}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Test.RPC.Protocol</RootNamespace>
-    <AssemblyName>Test.RPC.Protocol</AssemblyName>
+    <RootNamespace>NSF.Test.RPC.Perf.Cli</RootNamespace>
+    <AssemblyName>NSF.Test.RPC.Perf.Cli</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -46,6 +46,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framwork\NSF.Framework\NSF.Framework.csproj">
+      <Project>{77bbc9cb-749f-4819-96c3-259f3ffa30f4}</Project>
+      <Name>NSF.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framwork\NSF.Share\NSF.Share.csproj">
+      <Project>{6f771280-2a97-418a-97f8-d63cc0e27dc2}</Project>
+      <Name>NSF.Share</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NSF.Test.RPC.Protocol\NSF.Test.RPC.Protocol.csproj">
+      <Project>{c5f52edf-b83a-4d17-aec5-6051b397d492}</Project>
+      <Name>NSF.Test.RPC.Protocol</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

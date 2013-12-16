@@ -5,24 +5,24 @@ using System.Runtime.InteropServices;
 // 有关程序集的常规信息通过以下
 // 特性集控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("NSF.Server.Main")]
+[assembly: AssemblyTitle("NSF.Test.RPC.Perf.Svc")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("NSF.Server.Main")]
+[assembly: AssemblyProduct("NSF.Test.RPC.Perf.Svc")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // 将 ComVisible 设置为 false 使此程序集中的类型
-// 对 COM 组件不可见。如果需要从 COM 访问此程序集中的类型，
+// 对 COM 组件不可见。  如果需要从 COM 访问此程序集中的类型，
 // 则将该类型上的 ComVisible 特性设置为 true。
 [assembly: ComVisible(false)]
 
 // 如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID
-[assembly: Guid("d45bc4e0-4f8a-4074-9626-4fa19e6ed71a")]
+[assembly: Guid("9b608818-d680-4cfc-a453-cc268c8edc94")]
 
-// 程序集的版本信息由下面四个值组成:
+// 程序集的版本信息由下面四个值组成: 
 //
 //      主版本
 //      次版本 
@@ -30,7 +30,7 @@ using System.Runtime.InteropServices;
 //      修订号
 //
 // 可以指定所有这些值，也可以使用“生成号”和“修订号”的默认值，
-// 方法是按如下所示使用“*”:
+// 方法是按如下所示使用“*”: 
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]

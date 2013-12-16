@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // 有关程序集的常规信息通过以下
 // 特性集控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("NSF.Test")]
+[assembly: AssemblyTitle("NSF.Test.RPC.Perf.Cli")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("NSF.Test")]
+[assembly: AssemblyProduct("NSF.Test.RPC.Perf.Cli")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // 如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID
-[assembly: Guid("7449cf37-0c82-45f5-9ca2-6e772814b75e")]
+[assembly: Guid("8ff61a78-024e-466b-b9cd-8da2059ed72b")]
 
 // 程序集的版本信息由下面四个值组成: 
 //
