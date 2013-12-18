@@ -12,7 +12,8 @@ namespace NSF.Test.RPC.Perf.Cli
     {
         static void Main(string[] args)
         {
-            RpcProxy rpc = new RpcProxy(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 7000));
+            RpcService.Default.RegisterRPC("127.0.0.1", 7000, "Test");
+            RpcProxy rpc = RpcService.Default.GetRPC("Test");
             Log.Debug("Waiting 3000 ms to wait rpc proxy connection ready ...");
             Thread.Sleep(3000);
             Log.Debug("Waiting 3000 ms to wait rpc proxy connection done.");
@@ -34,7 +35,7 @@ namespace NSF.Test.RPC.Perf.Cli
                 {
                     localId = id,
                     LocalTimestamp = Util.DateTimeToTimestamp(DateTime.Now),
-                    LocalMessage = String.Format("Helo svc, i'm rcp#{0}.", id),
+                    LocalMessage = String.Format("Helo svc, i'm rpc#{0}.", id),
                 };
 
                 Log.Debug("#[{0, 2}.{1, 02}]RPC request posting ...", id, i);

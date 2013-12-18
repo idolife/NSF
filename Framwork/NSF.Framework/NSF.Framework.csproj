@@ -64,6 +64,7 @@
     <Compile Include="Net\RPC\RpcInterface.cs" />
     <Compile Include="Net\RPC\RpcProxy.cs" />
     <Compile Include="Net\RPC\RpcServer.cs" />
+    <Compile Include="Net\RPC\RpcService.cs" />
     <Compile Include="Net\StreamAcceptor.cs" />
     <Compile Include="Net\StreamHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
