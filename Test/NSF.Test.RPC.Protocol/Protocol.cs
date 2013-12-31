@@ -30,24 +30,24 @@ namespace NSF.Test.RPC.Protocol
             RegisterCall<RpcEchoReq, RpcEchoAck>(OnRpcEchoReq);
         }
 
-        protected Task<RpcEchoAck> OnRpcEchoReq(RpcEchoReq args)
+        protected Task<RpcEchoAck> OnRpcEchoReq(RpcEchoReq reg)
         {
             /// 参数检查
-            if (args == null)
+            if (reg == null)
             {
                 Log.Debug("OnRpcIncrementReq, Request parameter is null.");
-                return Task.FromResult((RpcEchoAck)null);
+                return Task.FromResult<RpcEchoAck>(null);
             }
-            RpcEchoReq req = (RpcEchoReq)args;
 
+            /// 逻辑处理
             RpcEchoAck ack = new RpcEchoAck
-            {              
-                localId = req.localId,
-                LocalTimestamp = req.LocalTimestamp,
+            {
+                localId = reg.localId,
+                LocalTimestamp = reg.LocalTimestamp,
                 RemoteTimestamp = Util.DateTimeToTimestamp(DateTime.Now),
-                RemoteMessage = String.Format("Hello, {0} !", req.localId),
+                RemoteMessage = String.Format("Hello, {0} !", reg.localId),
             };
-            return Task.FromResult((RpcEchoAck)ack);
+            return Task.FromResult<RpcEchoAck>(ack);
         }
     }
 }
