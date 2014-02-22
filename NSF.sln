@@ -17,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSF.Test.RPC.Perf.Svc", "Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSF.Test.RPC.Perf.Cli", "Test\NSF.Test.RPC.Perf.Cli\NSF.Test.RPC.Perf.Cli.csproj", "{DA24BB1C-A121-436C-83E9-B2C4F4CC8309}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSF.Test.Staff", "NSF.Test.Staff\NSF.Test.Staff.csproj", "{91D5547E-0EF3-4546-BEF2-A42971F9E03C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,16 +81,6 @@ Global
 		{DA24BB1C-A121-436C-83E9-B2C4F4CC8309}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{DA24BB1C-A121-436C-83E9-B2C4F4CC8309}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{DA24BB1C-A121-436C-83E9-B2C4F4CC8309}.Release|x64.ActiveCfg = Release|Any CPU
-		{91D5547E-0EF3-4546-BEF2-A42971F9E03C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{91D5547E-0EF3-4546-BEF2-A42971F9E03C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{91D5547E-0EF3-4546-BEF2-A42971F9E03C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{91D5547E-0EF3-4546-BEF2-A42971F9E03C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{91D5547E-0EF3-4546-BEF2-A42971F9E03C}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{91D5547E-0EF3-4546-BEF2-A42971F9E03C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{91D5547E-0EF3-4546-BEF2-A42971F9E03C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{91D5547E-0EF3-4546-BEF2-A42971F9E03C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{91D5547E-0EF3-4546-BEF2-A42971F9E03C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{91D5547E-0EF3-4546-BEF2-A42971F9E03C}.Release|x64.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -103,6 +91,5 @@ Global
 		{C5F52EDF-B83A-4D17-AEC5-6051B397D492} = {9AF40007-5C21-4462-AB02-C44E5EE73D65}
 		{344B8C3A-2DBC-4861-8F1A-77A80B193A98} = {9AF40007-5C21-4462-AB02-C44E5EE73D65}
 		{DA24BB1C-A121-436C-83E9-B2C4F4CC8309} = {9AF40007-5C21-4462-AB02-C44E5EE73D65}
-		{91D5547E-0EF3-4546-BEF2-A42971F9E03C} = {9AF40007-5C21-4462-AB02-C44E5EE73D65}
 	EndGlobalSection
 EndGlobal
