@@ -58,6 +58,7 @@
     <Compile Include="Base\ByteBlock.cs" />
     <Compile Include="Base\ConcurrentTaskAtor.cs" />
     <Compile Include="Base\WaitableConcurrentQueue.cs" />
+    <Compile Include="Net\HttpAcceptor.cs" />
     <Compile Include="Net\HttpHandler.cs" />
     <Compile Include="Net\RPC\RpcBind.cs" />
     <Compile Include="Net\RPC\RpcClient.cs" />

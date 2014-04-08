@@ -7,7 +7,7 @@ using NSF.Share;
 namespace NSF.Framework.Net
 {
 	/// <summary>
-	/// 处理连接接收的对象。
+	/// 处理TCP连接接收的对象。
 	/// </summary>
     public class StreamAcceptor
     {
@@ -17,22 +17,15 @@ namespace NSF.Framework.Net
 		/// <param name="port">服务绑定的端口。</param>
 		public void Init(int port)
 		{
-			try
-			{
-				/// 开启侦听
-				TcpListener listener = new TcpListener(IPAddress.Any, port);
-				listener.Start();
+            /// 开启侦听
+            TcpListener listener = new TcpListener(IPAddress.Any, port);
+            listener.Start();
 
-				/// 开启侦听主循环线程
-				Task.Run(async () => await Svc(listener))
-					.ContinueWith(OnListenerException, TaskContinuationOptions.OnlyOnFaulted);
+            /// 开启侦听主循环线程
+            Task.Run(async () => await Svc(listener))
+                .ContinueWith(OnListenerException, TaskContinuationOptions.OnlyOnFaulted);
 
-                Log.Info("Listen service success at {0}", listener.LocalEndpoint.ToString());
-			}
-			catch (Exception e)
-			{
-                Log.Error("Listen service failed at {0} : {1}", port, e.ToString());
-			}		
+            Log.Info("Listen service success at {0}", listener.LocalEndpoint.ToString());
 		}
 
 		/// <summary>
@@ -69,7 +62,7 @@ namespace NSF.Framework.Net
 				{
 					/// 当处理接收过程中排队的连接断开后会发生异常
 					/// 此异常不应该导致侦听服务中断服务
-					Log.Debug("Service exception: {0}", e.ToString());
+                    Log.Debug("StreamAcceptor exception: {0}", e.ToString());
 				}
 			}
 		}
