@@ -11,7 +11,7 @@ namespace NSF.Test.Staff
 {
     class Program
     {
-        static async Task HttpModuleBilling(HttpListenerResponse resp, String context)
+        static async Task ModuleBilling(HttpListenerResponse resp, String context)
         {
             Log.Debug("HttpModuleBilling, {0}", context);
             String respInfo = "{\"status\":\"1\"}";
@@ -27,8 +27,8 @@ namespace NSF.Test.Staff
             //var v2 = Util.GZipDecompressString(v1, Encoding.UTF8);
 
             HttpAcceptor svc = new HttpAcceptor();
-            svc.Init();
-            svc.RegisterService("/billing/", HttpModuleBilling);
+            svc.Init(new String[] {"http://127.0.0.1/billing/"});
+            svc.RegisterService("/billing/", ModuleBilling);
             (new ConsoleBreakHandler()).Wait();
         }
     }

@@ -19,7 +19,8 @@ namespace NSF.Test.RPC.Perf.Cli
             Log.Debug("Waiting 3000 ms to wait rpc proxy connection done.");
 
             Log.Debug("Main, Build rpc request task ...");
-            for (Int32 i = 1; i <= 100; ++i)
+            /// Currently, RpcProxy is not thread safe.
+            for (Int32 i = 1; i <= 1; ++i)
             {
                 Task.Run(() => RpcRequest(rpc, i));
             }
@@ -29,11 +30,11 @@ namespace NSF.Test.RPC.Perf.Cli
 
         static async void RpcRequest(RpcProxy rpc, Int32 id)
         {
-            for (int i = 1; i <= 100; ++i)
+            for (int i = 1; i <= 10000; ++i)
             {
                 RpcEchoReq req = new RpcEchoReq
                 {
-                    localId = id,
+                    localId = id * 100000 + i,
                     LocalTimestamp = Util.DateTimeToTimestamp(DateTime.Now),
                     LocalMessage = String.Format("Helo svc, i'm rpc#{0}.", id),
                 };

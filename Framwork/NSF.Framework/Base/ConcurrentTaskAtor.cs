@@ -110,16 +110,13 @@ namespace NSF.Framework.Base
             List<Actor> jobWait = new List<Actor>();
             /// 创建一个新任务通知
             Task<Actor> jobNtf = _Jobs.Dequeue();
+            List<Task> jobTasks = new List<Task>();
+            jobTasks.Add(jobNtf);
             try
             {
                 while (true)
                 {
-                    /// 等待任意一个任务完成
-                    List<Task> jobTasks = (
-                        jobWait
-                        .Select(x => x.Task)
-                        .Where(x => x != null)).ToList();
-                    jobTasks.Add(jobNtf);
+                    /// 等待任意一个任务完成                   
                     Task finishTask = await Task.WhenAny(jobTasks);
 
                     /// 有任务完成
@@ -127,23 +124,28 @@ namespace NSF.Framework.Base
                     {
                         /// 关联完成的任务对象
                         Actor job = jobWait.Find(x => x.Task == finishTask);
-                        /// 不是本地回调则创建分发任务完成实际回调
-                        if (job.Callback != null)
-                        {
-                            Put(job.Callback(finishTask, job.Object), null, null);
-                        }
+                        /// 不是本地回调完成实际回调
+                        await job.Callback(finishTask, job.Object);
                         /// 移除正在回调的任务
                         jobWait.Remove(job);
+                        
                     }
                     /// 有任务到达
                     else
                     {
-                        /// 添加新任务到等待队列
+                        /// 添加新任务到分发队列
                         Actor job = jobNtf.Result;
                         jobWait.Add(job);
+                        jobTasks.Add(job.Task);                        
+
                         /// 创建一个新任务通知
                         jobNtf = _Jobs.Dequeue();
+                        /// 加入分发队列
+                        jobTasks.Add(jobNtf);
                     }
+
+                    /// 移除当前完成的任务
+                    jobTasks.Remove(finishTask);
                 }
             }
             /// 只要出现异常我们任务该对象就没有必要运行下去了

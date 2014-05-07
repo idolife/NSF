@@ -120,8 +120,8 @@ namespace NSF.Framework.Net
                 /// 只支持POST方法
                 if (request.HttpMethod == "GET")
                 {
-                    Log.Warn("No get methode support.", request.Url.AbsolutePath);
-                    http.Response.StatusCode = (Int32)HttpStatusCode.NotAcceptable;                    
+                    Log.Warn("GET method not support.");
+                    http.Response.StatusCode = (Int32)HttpStatusCode.NotFound;                    
                     break;
                 }
 
@@ -139,7 +139,8 @@ namespace NSF.Framework.Net
                 }
 
             } while (false);
-            http.Response.Close();
+
+            ///http.Response.Close();
             Log.Debug("-------------------------------{0,08}---", http.GetHashCode());
         }
 
@@ -182,7 +183,7 @@ namespace NSF.Framework.Net
         private void OnListenerException(Task t)
         {
             Exception e = t.Exception;
-            Log.Error(String.Format("Exception unhandled in listener task: {0}", e.ToString()));
+            Log.Debug(String.Format("Exception unhandled in listener task: {0}", e.ToString()));
         }
 
         /// <summary>
@@ -191,7 +192,7 @@ namespace NSF.Framework.Net
         private void OnClientException(Task t)
         {
             Exception e = t.Exception;
-            Log.Error(String.Format("Exception unhandled in handler task: {0}", e.ToString()));
+            Log.Debug(String.Format("Exception unhandled in handler task: {0}", e.ToString()));
         }
     }
 }
